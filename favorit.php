@@ -1,39 +1,34 @@
+<script type="text/javascript">
+	$(function() {
+	    $('#konten').easyPaginate({
+	        paginateElement: 'section',
+	        elementsPerPage: 5,
+	        effect: 'climb'
+	    });
+	});
+</script>
 <ol class="breadcrumb custom-breadcrumb">
     <li class="active">Favorit</li>
 </ol>
 <div class="konten">
-	Urutan Terfavorit<br />
-	<table id="data" class="table table-bordered table-hover" cellspacing="0" width="100%">
-                	<thead>
-                        <tr>
-                            <th>Id Berita</th>
-                            <th>Judul</th>
-                            <th>Tgl Post</th>
-                            <th>Kategori</th>
-                            <th>Sumber</th>
-                            <th>Isi</th>
-                            <th>Gambar</th>
-                            <th>Dilihat</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    	<?php 
-                        $x = query("select * from berita order by dilihat desc");
-                        while($y = mysqli_fetch_array($x)){
-                        ?>
-                        <tr>
-                            <td><?php echo $y['id_berita']; ?></td>
-                            <td><?php echo $y['judul']; ?></td>
-                            <td><?php echo date("d/m/Y", strtotime($y['tgl_post'])); ?></td>
-                            <td><?php echo $y['kategori']; ?></td>
-                            <td><?php echo $y['sumber']; ?></td>
-                            <td><?php echo substr(strip_tags($y['isi']), 0, 100).'....'; ?></td>
-                            <td><?php echo $y['cover']!=''?"<img src=\"berita/$y[cover]\" width=\"50\" height=\"50\" />":'no image'; ?></td>
-                            <td><?php echo $y['dilihat']; ?></td>
-                        </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+	<div id="konten">
+	<?php 
+    $x = query("select * from berita order by dilihat desc");
+    while($y = mysqli_fetch_array($x)){
+    ?>
+    <section class="konten-isi">
+    	<a href="?h=berita_detail&id=<?php echo $y['id_berita']; ?>"><span style="color: blue;"><?php echo $y['judul']; ?></span></a><br />
+    	<a href="?h=<?php echo $y['kategori']; ?>"><span style="color: #4CAF50;font-size: 10px;"><i><?php echo $y['kategori']; ?></i></span> |</a>
+        <span style="color: red;font-size: 10px;"><i><?php echo date("d/m/Y H:i:s", strtotime($y['tgl_post'])); ?></i></span> |
+        <span style="color: #4CAF50;font-size: 10px;"><i>dilihat <?php echo $y['dilihat']; ?> kali</i></span><br />
+        <?php echo $y['cover']!=''?"<img src=\"admin/berita/$y[cover]\" width=\"100\" height=\"100\" align=\"left\" />":'no image'; ?>
+        <?php echo substr(strip_tags($y['isi']), 0, 600).'....'; ?>
+        <a href="?h=berita_detail&id=<?php echo $y['id_berita']; ?>">selengkapnya</a>
+        <div style="clear: both;">&nbsp;</div>
+    </section>
+    <?php } ?>
+    </div>
 </div>
+
 	
 
